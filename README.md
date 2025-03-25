@@ -53,7 +53,10 @@ sudo responder -I eth0
 
 6️⃣ Explotación con ProxyChains
 
-Editar /etc/proxychains4.conf: socks4 127.0.0.1 1080
+Editar socks4 127.0.0.1 1080
+```bash
+/etc/proxychains4.conf:
+````
 
 Ejemplo: Robar hashes SAM
 ````bash
