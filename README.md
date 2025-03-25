@@ -1,9 +1,9 @@
 # NTLM SMB Relay Attack Guide
-![imagen](https://github.com/90l3m0np13/NTLM-SMB-RELAY/blob/main/Imagen.jpeg)
-
 
 ## 📌 Descripción
 Guía técnica para realizar ataques de **NTLM Relay** contra sistemas Windows con SMB signing deshabilitado, permitiendo ejecución remota de comandos, robo de hashes y movimiento lateral.
+
+![imagen](https://github.com/90l3m0np13/NTLM-SMB-RELAY/blob/main/Imagen.jpeg)
 
 ## ⚠️ Requisitos Legales
 - **Solo para pentesting autorizado o entornos de laboratorio**.  
